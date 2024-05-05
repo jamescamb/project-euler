@@ -28,6 +28,9 @@ grid = np.array([[8, 2, 22, 97, 38, 15, 00, 40, 00, 75, 4, 5, 7, 78, 52, 12, 50,
 max_product = 0
 length = 4
 
+if grid.shape[0] != grid.shape[1]:
+    print("Warning: May give incorrect answer")
+
 # Check rows
 for i in range(grid.shape[0]):
     for j in range(grid.shape[1] - length):
@@ -37,5 +40,18 @@ for i in range(grid.shape[0]):
 for i in range(grid.shape[1]):
     for j in range(grid.shape[0] - length):
         max_product = max(max_product, np.prod(grid[:, i][j : j + length]))
+
+# Check right diagonals
+for i in range(1 - grid.shape[0], grid.shape[0] - 1):
+    if len(np.diag(grid, k = i)) >= length:
+        for j in range(len(np.diag(grid, k = i)) - length):
+            max_product = max(max_product, np.prod(np.diag(grid, k = i)[j : j + length]))
+
+# Check left diagonals
+flipped_grid = np.fliplr(grid)
+for i in range(1 - flipped_grid.shape[0], flipped_grid.shape[0] - 1):
+    if len(np.diag(flipped_grid, k = i)) >= length:
+        for j in range(len(np.diag(flipped_grid, k = i)) - length):
+            max_product = max(max_product, np.prod(np.diag(flipped_grid, k = i)[j : j + length]))
 
 print(max_product)
