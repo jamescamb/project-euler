@@ -4,7 +4,7 @@ because all rotations of the digits: 197, 971, and 719, are themselves prime.
 How many circular primes are there below one million?
 """
 
-lower_limt = 2
+lower_limit = 2
 upper_limit = 1000000
 
 answer = 0
@@ -24,7 +24,7 @@ def roll(number: int) -> int:
 
     return int(string[1:])
 
-primes = [x for x in range(lower_limt, upper_limit) if is_prime(x) and "0" not in str(x)]
+primes = [x for x in range(lower_limit, upper_limit) if is_prime(x) and "0" not in str(x)]
 
 for prime in primes:
     circular = True
