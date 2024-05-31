@@ -12,34 +12,51 @@ HINT: Some products can be obtained in more than one way so be sure to only incl
 
 from collections import Counter
 
-def pandigital(multiplicand: int, multiplier: int, product: int) -> bool:
+def pandigital(multiplicand: int, multiplier: int) -> bool:
     """
     Check if a multiplicand/multiplier/product combination is pandigital
     """
 
     valid = [str(x) for x in range(1, 10)]
-    string = str(multiplicand) + str(multiplier) + str(product)
-
-    for char in string:
-        if char not in valid:
-            return False
+    string = str(multiplicand) + str(multiplier) + str(multiplicand*multiplier)
+    
+    if "0" in string:
+        return False
 
     dic = Counter(string)
     for num in valid:
-        if num not in string or dic[num] != 1:
+        if num not in string or dic[num] > 1:
+            return False
+    
+    return True
+
+def repeat(number: int) -> bool:
+    """
+    Check if a single number has any repeat/non-valid digits
+    """
+
+    if "0" in str(number):
+        return False
+    
+    dic = Counter(str(number))
+    for value in dic.values():
+        if value > 1:
             return False
     
     return True
 
 lower_limit = 2
-upper_limit = 10000
+upper_limit = 2000
+
+valid_values = [x for x in range(lower_limit, upper_limit) if repeat(x)]
+n = len(valid_values)
 
 pandigital_set = set()
 
-for i in range(lower_limit, upper_limit):
-    for j in range(i, upper_limit):
-        if pandigital(i, j, i*j):
-            print(i, j, i*j)
+for i in valid_values[0: int(n/2)]:
+    for j in valid_values:
+        if pandigital(i, j):
             pandigital_set.add(i*j)
 
-print(pandigital_set)
+answer = sum(pandigital_set)
+print(answer)
