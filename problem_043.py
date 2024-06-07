@@ -24,14 +24,14 @@ p = ["".join(x) for x in p] # if x[0] != "0"]
 
 def prime_digits(number: str) -> bool:
 
-    right, limit = 3, 10
     divisors = [2, 3, 5, 7, 11, 13, 17]
     
-    while right <= limit:
-        digits = number[right - 2 : right + 1]
-        print(digits)
-        right += 1
+    for i in range(len(number) - 3):
+        digits = number[i + 1 : i + 4]
+        if int(digits) % divisors[i] != 0:
+            return False
 
     return True
 
-prime_digits("1406357289")
+answer = sum([int(x) for x in p if prime_digits(x)])
+print(answer)
