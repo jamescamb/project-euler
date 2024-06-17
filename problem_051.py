@@ -12,3 +12,24 @@ by replacing part of the number (not necessarily adjacent digits) with the same 
 is part of an eight prime value family.
 """
 
+from collections import defaultdict
+
+def permutations(n: int) -> dict:
+
+    digits = len(str(n))
+    perms = defaultdict(list)
+
+    for i in range(digits):
+        for k in range(9):
+            new_n = ""
+            for j in range(digits):
+                if j != i:
+                    new_n += str(n)[j]
+                else:
+                    new_n += str(k)
+            if len(str(int(new_n))) == digits:
+                perms[i + 1].append(int(new_n))
+    
+    return perms
+
+print(permutations(13))
