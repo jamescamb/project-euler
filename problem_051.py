@@ -12,7 +12,7 @@ by replacing part of the number (not necessarily adjacent digits) with the same 
 is part of an eight prime value family.
 """
 
-from typing import Tuple
+import itertools
 from collections import defaultdict
 
 def is_prime(n: int) -> bool:
@@ -23,37 +23,51 @@ def is_prime(n: int) -> bool:
     
     return True
 
-def permutations(n: int) -> Tuple[dict, dict]:
+def replace_vals(digits: int) -> list:
+
+    result = list(itertools.product([0, 1], repeat=digits))
+    if len(result) > 1:
+        return result[1:]
+    else:
+        return result
+
+def permutations(n: int) -> dict:
 
     digits = len(str(n))
     perms = defaultdict(list)
-    primes = defaultdict(int)
+    vals = replace_vals(digits)
+    count = 0
 
-    for i in range(digits):
-        for k in range(9):
+    for val in vals:
+        count += 1
+        for k in range(10):
             new_n = ""
             for j in range(digits):
-                if j != i:
+                if val[j] == 0:
                     new_n += str(n)[j]
                 else:
                     new_n += str(k)
-            if len(str(int(new_n))) == digits:
-                perms[i + 1].append(int(new_n))
-                primes[i + 1] += 1 if is_prime(int(new_n)) else 0
+            if len(str(int(new_n))) == digits and is_prime(int(new_n)):
+                perms[count].append(int(new_n))
     
-    return perms, primes
+    return perms
 
 def candidates(lower_bound: int, upper_bound: int) -> int:
 
     cands = defaultdict(int)
 
     for i in range(lower_bound, upper_bound):
-        perms, primes = permutations(i)
-        cands[max(primes, key=primes.get())] = min(perms[max(primes, key=primes.get)])
+        perms = permutations(i)
+        if perms:
+            max_len = max(perms, key=lambda k: len(perms[k]))
+            length = len(perms[max_len])
+            min_prime = min(perms[max_len])
+            if not cands[length]:
+                cands[length] = min_prime
     
     print(cands)
 
-    return max(cands)
+    return cands[max(cands)]
 
 answer = candidates(10000, 100000)
 print(answer)
