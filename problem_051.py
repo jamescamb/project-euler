@@ -69,5 +69,5 @@ def candidates(lower_bound: int, upper_bound: int) -> int:
 
     return cands[max(cands)]
 
-answer = candidates(10000, 100000)
+answer = candidates(121310, 121319)
 print(answer)
