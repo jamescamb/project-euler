@@ -7,6 +7,8 @@ The sum of these four primes, 792, represents the lowest sum for a set of four p
 Find the lowest sum for a set of five primes for which any two primes concatenate to produce another prime.
 """
 
+from itertools import combinations
+
 def is_prime(n: int) -> bool:
     """
     Determine if a number is prime or not
@@ -28,5 +30,12 @@ def concatenate_primes(primes: list) -> bool:
     
     return True
 
-test = concatenate_primes([3, 7, 109, 673])
-print(test)
+upper_limit = 1500
+primes = [x for x in range(2, upper_limit) if is_prime(x)]
+print(len(primes))
+subarrays = list(combinations(primes, 5))
+
+for subarray in subarrays:
+    if concatenate_primes(subarray):
+        print(subarray)
+        break
